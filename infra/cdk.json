@@ -1,0 +1,6 @@
+{
+  "app": "npx ts-node --transpile-only bin/ginger-dragon.ts",
+  "context": {
+    "@aws-cdk/aws-rds:databaseProxyUniqueResourceName": true
+  }
+}
