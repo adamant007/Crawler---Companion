@@ -17,17 +17,17 @@ fi
 cd "$(dirname "$0")"
 
 echo "Installing infrastructure dependencies locally in CloudShell..."
-npm install
+npm install --include=dev
 
 echo "Building CDK app..."
 npm run build
 
 echo "Synthesizing CloudFormation template (no AWS resources are created)..."
-CDK_DEFAULT_ACCOUNT="${ACCOUNT_ID}" CDK_DEFAULT_REGION="${REGION}"   npx cdk synth >/dev/null
+CDK_DEFAULT_ACCOUNT="${ACCOUNT_ID}" CDK_DEFAULT_REGION="${REGION}"   npx --no-install cdk synth >/dev/null
 
 echo
 echo "Previewing deployment diff (no AWS resources are created)..."
-CDK_DEFAULT_ACCOUNT="${ACCOUNT_ID}" CDK_DEFAULT_REGION="${REGION}"   npx cdk diff || true
+CDK_DEFAULT_ACCOUNT="${ACCOUNT_ID}" CDK_DEFAULT_REGION="${REGION}"   npx --no-install cdk diff || true
 
 echo
 echo "READY FOR AWS DEPLOYMENT"
@@ -40,9 +40,9 @@ if [[ "${CONFIRM}" != "DEPLOY" ]]; then
 fi
 
 echo "Bootstrapping CDK (safe to rerun)..."
-CDK_DEFAULT_ACCOUNT="${ACCOUNT_ID}" CDK_DEFAULT_REGION="${REGION}"   npx cdk bootstrap "aws://${ACCOUNT_ID}/${REGION}"
+CDK_DEFAULT_ACCOUNT="${ACCOUNT_ID}" CDK_DEFAULT_REGION="${REGION}"   npx --no-install cdk bootstrap "aws://${ACCOUNT_ID}/${REGION}"
 
-CDK_DEFAULT_ACCOUNT="${ACCOUNT_ID}" CDK_DEFAULT_REGION="${REGION}"   npx cdk deploy GingerDragonProd   --require-approval never   --outputs-file cdk-outputs.json
+CDK_DEFAULT_ACCOUNT="${ACCOUNT_ID}" CDK_DEFAULT_REGION="${REGION}"   npx --no-install cdk deploy GingerDragonProd   --require-approval never   --outputs-file cdk-outputs.json
 
 echo
 echo "Deployment complete. CloudFormation outputs:"
